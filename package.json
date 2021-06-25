@@ -1,26 +1,143 @@
 {
-	"name": "gitee-vscde-plugin",
-	"displayName": "gitee_vscde_plugin",
-	"description": "",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.47.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:gitee-vscde-plugin.helloWorld"
-	],
-	"main": "./extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "gitee-vscde-plugin.helloWorld",
-				"title": "Hello World"
-			}
-		]
-	},
-	"scripts": {},
-	"devDependencies": {}
+    "name": "gitee-vscode-plugin",
+    "displayName": "gitee_vscode_plugin",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.47.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./index.js",
+    "contributes": {
+        "configuration": {
+            "title": "lsby_gitee_vscode_plugin",
+            "properties": {
+                "lsby_gitee_vscode_plugin.personal_access_tokens": {
+                    "type": "string",
+                    "description": "你的gitee私人令牌",
+                    "default": ""
+                },
+                "lsby_gitee_vscode_plugin.default_location": {
+                    "type": "string",
+                    "description": "下载仓库的位置,默认是家目录的gitee文件夹",
+                    "default": "${process.env.HOME || process.env.USERPROFILE}/gitee"
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "lsby_gitee_vscode_plugin",
+                    "title": "gitee插件",
+                    "icon": "images/gitee_bar.svg"
+                }
+            ]
+        },
+        "views": {
+            "lsby_gitee_vscode_plugin": [
+                {
+                    "id": "my_repo",
+                    "name": "我的仓库"
+                },
+                {
+                    "id": "my_info",
+                    "name": "我的通知"
+                },
+                {
+                    "id": "my_dynamic",
+                    "name": "我的动态"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "lsby_gitee_vscode_plugin.刷新",
+                "title": "刷新"
+            },
+            {
+                "command": "lsby_gitee_vscode_plugin.新建仓库",
+                "title": "新建仓库"
+            },
+            {
+                "command": "lsby_gitee_vscode_plugin.下载仓库",
+                "title": "下载仓库"
+            },
+            {
+                "command": "lsby_gitee_vscode_plugin.打开在网页",
+                "title": "打开在网页"
+            },
+            {
+                "command": "lsby_gitee_vscode_plugin.打开在资源管理器",
+                "title": "打开在资源管理器"
+            },
+            {
+                "command": "lsby_gitee_vscode_plugin.打开在vscode",
+                "title": "打开在vscode"
+            },
+            {
+                "command": "lsby_gitee_vscode_plugin.复制仓库地址(https)",
+                "title": "复制仓库地址(https)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "lsby_gitee_vscode_plugin.新建仓库",
+                    "when": "view == my_repo",
+                    "group": "navigation"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.刷新",
+                    "when": "view == my_repo",
+                    "group": "navigation"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "lsby_gitee_vscode_plugin.刷新",
+                    "when": "view == my_repo"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.新建仓库",
+                    "when": "view == my_repo"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.下载仓库",
+                    "when": "view == my_repo"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.打开在网页",
+                    "when": "view == my_repo"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.打开在资源管理器",
+                    "when": "view == my_repo"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.打开在vscode",
+                    "when": "view == my_repo"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.复制仓库地址(https)",
+                    "when": "view == my_repo"
+                }
+            ]
+        }
+    },
+    "scripts": {},
+    "devDependencies": {},
+    "dependencies": {
+        "clipboardy": "^2.3.0",
+        "git-clone": "^0.1.0",
+        "mkdirp": "^1.0.4",
+        "open-file-explorer": "^1.0.2",
+        "opn": "^6.0.0",
+        "ramda": "^0.27.1",
+        "request": "^2.88.2"
+    }
 }

@@ -6,22 +6,16 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Run Extension",
+			"name": "测试",
 			"type": "extensionHost",
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
-			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}"
-			]
-		},
-		{
-			"name": "Extension Tests",
-			"type": "extensionHost",
-			"request": "launch",
-			"runtimeExecutable": "${execPath}",
+			"env": {
+				"NODE_ENV": "dev"
+			},
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/test/suite/index"
+				"--disable-extensions"
 			]
 		}
 	]
