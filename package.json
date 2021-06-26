@@ -26,6 +26,11 @@
                     "type": "string",
                     "description": "下载仓库的位置,默认是家目录的gitee文件夹",
                     "default": "${process.env.HOME || process.env.USERPROFILE}/gitee"
+                },
+                "lsby_gitee_vscode_plugin.notificationsUpdateTime": {
+                    "type": "string",
+                    "description": "通知自动刷新时间(分种),0为不自动刷新",
+                    "default": "10"
                 }
             }
         },
@@ -47,16 +52,12 @@
                 {
                     "id": "my_info",
                     "name": "我的通知"
-                },
-                {
-                    "id": "my_dynamic",
-                    "name": "我的动态"
                 }
             ]
         },
         "commands": [
             {
-                "command": "lsby_gitee_vscode_plugin.刷新",
+                "command": "lsby_gitee_vscode_plugin.刷新仓库",
                 "title": "刷新"
             },
             {
@@ -82,6 +83,14 @@
             {
                 "command": "lsby_gitee_vscode_plugin.复制仓库地址(https)",
                 "title": "复制仓库地址(https)"
+            },
+            {
+                "command": "lsby_gitee_vscode_plugin.刷新通知",
+                "title": "刷新"
+            },
+            {
+                "command": "lsby_gitee_vscode_plugin.打开通知在网页",
+                "title": "打开在网页"
             }
         ],
         "menus": {
@@ -92,14 +101,19 @@
                     "group": "navigation"
                 },
                 {
-                    "command": "lsby_gitee_vscode_plugin.刷新",
+                    "command": "lsby_gitee_vscode_plugin.刷新仓库",
                     "when": "view == my_repo",
+                    "group": "navigation"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.刷新通知",
+                    "when": "view == my_info",
                     "group": "navigation"
                 }
             ],
             "view/item/context": [
                 {
-                    "command": "lsby_gitee_vscode_plugin.刷新",
+                    "command": "lsby_gitee_vscode_plugin.刷新仓库",
                     "when": "view == my_repo"
                 },
                 {
@@ -125,6 +139,10 @@
                 {
                     "command": "lsby_gitee_vscode_plugin.复制仓库地址(https)",
                     "when": "view == my_repo"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.打开通知在网页",
+                    "when": "view == my_info"
                 }
             ]
         }

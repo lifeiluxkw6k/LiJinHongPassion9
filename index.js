@@ -11,6 +11,7 @@ var clipboardy = require('clipboardy')
 
 var 插件名称 = 'lsby_gitee_vscode_plugin'
 
+var Y = s => s(s)
 var 异常 = s => {
     console.error(s)
     throw new Error(s)
@@ -21,21 +22,24 @@ var 注册树数据提供者 = (id) => {
 
     vscode.window.registerTreeDataProvider(id, {
         getTreeItem: a => a,
-        getChildren: _ => 数据.map(a => vscode.TreeItem(a)),
+        getChildren: _ => 数据.map(a => {
+            var r = vscode.TreeItem(a.显示文本)
+            r.id = a.id || a.显示文本
+            return r
+        }),
         onDidChangeTreeData: 数据改变事件.event
     })
     var r = {
-        设置数据: 数组 => {
-            数据 = 数组
+        设置数据: 输入数据 => {
+            数据 = 输入数据
             数据改变事件.fire()
             return r
         }
     }
     return r
 }
-var 获得仓库名称 = 选择仓库 => 选择仓库.label.match(/(?<=\[.*?\]).*/g)[0]
-var 获得选择仓库的地址 = (用户仓库信息, 选择仓库) => 用户仓库信息.filter(a => a.name == 获得仓库名称(选择仓库))[0].html_url
-var 获得完整本地地址 = (下载位置, 选择仓库) => path.join(下载位置, 获得仓库名称(选择仓库))
+var 获得选择仓库的地址 = (用户仓库信息, 选择仓库) => 用户仓库信息.filter(a => a.name == 选择仓库.id)[0].html_url
+var 获得完整本地地址 = (下载位置, 选择仓库) => path.join(下载位置, 选择仓库.id)
 var 注册命令 = (context, 名称, 函数) => context.subscriptions.push(vscode.commands.registerCommand(`${插件名称}.${名称}`, 函数))
 var 获得用户仓库信息 = (令牌) => HttpHelp('get', `https://gitee.com/api/v5/user/repos?access_token=${令牌}&sort=full_name&page=1&per_page=100`)
     .then(a => a.body)
@@ -50,9 +54,14 @@ var 翻译 = s => HttpHelp('get', `https://gitee.com/search/translate?q=${encode
     .then(a => a.result)
 var 获得用户配置 = _ => [
     { 中文名称: '令牌', 英文名称: 'personal_access_tokens', 处理函数: a => a },
-    { 中文名称: '下载位置', 英文名称: 'default_location', 处理函数: a => path.resolve(eval('`' + a + '`')) }
+    { 中文名称: '下载位置', 英文名称: 'default_location', 处理函数: a => path.resolve(eval('`' + a + '`')) },
+    { 中文名称: '通知自动刷新时间', 英文名称: 'notificationsUpdateTime', 处理函数: a => a },
 ].map(a => ({ [a.中文名称]: a.处理函数(vscode.workspace.getConfiguration(插件名称).get(a.英文名称)) }))
     .reduce((s, a) => Object.assign(s, a), {})
+var 获得用户通知 = (令牌) => HttpHelp('get', `https://gitee.com/api/v5/notifications/threads?access_token=${令牌}&type=all&page=1&per_page=20`)
+    .then(a => a.body)
+    .then(JSON.parse)
+var 获得通知地址 = (用户通知信息, 选择通知) => 用户通知信息.filter(a => a.id == 选择通知[0].id)[0].html_url
 
 exports.activate = async function (context) {
     console.log(`"${插件名称}" 已启动`)
@@ -62,12 +71,23 @@ exports.activate = async function (context) {
         异常('未配置令牌')
     }
 
-    var 用户仓库信息 = await 获得用户仓库信息(用户配置.令牌)
-    var 界面_我的仓库 = 注册树数据提供者('my_repo').设置数据(['加载中...'])
+    var 用户仓库信息
+    var 用户通知信息
+    var 界面_我的仓库 = 注册树数据提供者('my_repo').设置数据([{ 显示文本: '加载中...' }])
+    var 界面_我的通知 = 注册树数据提供者('my_info').设置数据([{ 显示文本: '加载中...' }])
 
-    注册命令(context, '刷新', async _ => {
+    注册命令(context, '刷新通知', async _ => {
+        用户通知信息 = (await 获得用户通知(用户配置.令牌)).list
+        界面_我的通知.设置数据(用户通知信息.map(a => ({ 显示文本: (a.unread ? '[未]' : '[已]') + a.content, id: a.id })))
+    })
+    注册命令(context, '打开通知在网页', async (...a) => {
+        var 地址 = 获得通知地址(用户通知信息, a)
+        opn(地址)
+    })
+
+    注册命令(context, '刷新仓库', async _ => {
         用户仓库信息 = await 获得用户仓库信息(用户配置.令牌)
-        界面_我的仓库.设置数据(用户仓库信息.map(a => (a.public ? '[公]' : a.private ? '[私]' : '[未]') + a.name))
+        界面_我的仓库.设置数据(用户仓库信息.map(a => ({ 显示文本: (a.public ? '[公]' : a.private ? '[私]' : '[未]') + a.name, id: a.name })))
     })
     注册命令(context, '新建仓库', async _ => {
         var 仓库名称 = await vscode.window.showInputBox({
@@ -135,5 +155,14 @@ exports.activate = async function (context) {
         提示('已复制到剪切板')
     })
 
-    执行命令('刷新')
+    执行命令('刷新仓库')
+    执行命令('刷新通知')
+
+    if (用户配置.通知自动刷新时间 != 0) {
+        Y(s => setTimeout(async () => {
+            提示('刷新')
+            await 执行命令('刷新通知')
+            s(s)
+        }, 用户配置.通知自动刷新时间 * 60 * 1000))
+    }
 }
