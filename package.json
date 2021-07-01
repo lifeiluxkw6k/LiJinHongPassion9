@@ -3,8 +3,13 @@
     "displayName": "gitee_vscode_plugin",
     "description": "",
     "version": "0.0.1",
+    "publisher": "hbybyyang",
     "engines": {
         "vscode": "^1.47.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://gitee.com/hbybyyang/gitee_vscde_plugin.git"
     },
     "categories": [
         "Other"
