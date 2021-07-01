@@ -8,7 +8,7 @@ gitee 的 vscod 插件!
 
 ## 安装
 
-等会发到vscode商店.
+[vscode商店](https://marketplace.visualstudio.com/items?itemName=hbybyyang.gitee-vscode-plugin)
 
 ## 相关
 
