@@ -111,7 +111,7 @@ exports.activate = async function (context) {
 
         var res = await 创建仓库(用户配置.令牌, 路径)
         提示(JSON.stringify(res))
-        执行命令('刷新')
+        执行命令('新建仓库')
     })
     注册命令(context, '下载仓库', async a => {
         var 地址 = 获得选择仓库的地址(用户仓库信息, a)
