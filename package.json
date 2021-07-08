@@ -2,7 +2,7 @@
     "name": "gitee-vscode-plugin",
     "displayName": "gitee_vscode_plugin",
     "description": "",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "hbybyyang",
     "engines": {
         "vscode": "^1.47.0"
@@ -36,6 +36,23 @@
                     "type": "string",
                     "description": "通知自动刷新时间(分种),0为不自动刷新",
                     "default": "10"
+                },
+                "lsby_gitee_vscode_plugin.repoSort": {
+                    "type": "string",
+                    "description": "仓库排序选项",
+                    "default": "pushed",
+                    "enum": [
+                        "created",
+                        "updated",
+                        "pushed",
+                        "full_name"
+                    ],
+                    "enumDescriptions": [
+                        "创建时间",
+                        "更新时间",
+                        "最后推送时间",
+                        "仓库所属与名称"
+                    ]
                 }
             }
         },

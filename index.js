@@ -39,9 +39,9 @@ var 注册树数据提供者 = (id) => {
     return r
 }
 var 获得选择仓库的地址 = (用户仓库信息, 选择仓库) => 用户仓库信息.filter(a => a.id == 选择仓库.id)[0].html_url
-var 获得完整本地地址 = (下载位置, 选择仓库) => path.join(下载位置, 选择仓库.id)
+var 获得完整本地地址 = (下载位置, 选择仓库) => path.join(下载位置, 选择仓库.label.match(/(?<=\[.*?\]).*/g)[0])
 var 注册命令 = (context, 名称, 函数) => context.subscriptions.push(vscode.commands.registerCommand(`${插件名称}.${名称}`, 函数))
-var 获得用户仓库信息 = (令牌) => HttpHelp('get', `https://gitee.com/api/v5/user/repos?access_token=${令牌}&sort=full_name&page=1&per_page=100`)
+var 获得用户仓库信息 = (令牌, 仓库排序选项) => HttpHelp('get', `https://gitee.com/api/v5/user/repos?access_token=${令牌}&sort=${仓库排序选项}&page=1&per_page=100`)
     .then(a => a.body)
     .then(JSON.parse)
 var 创建仓库 = (令牌, 名称) => HttpHelp('post', 'https://gitee.com/api/v5/user/repos', { "access_token": 令牌, "name": 名称, "private": "true" })
@@ -56,6 +56,7 @@ var 获得用户配置 = _ => [
     { 中文名称: '令牌', 英文名称: 'personal_access_tokens', 处理函数: a => a },
     { 中文名称: '下载位置', 英文名称: 'default_location', 处理函数: a => path.resolve(eval('`' + a + '`')) },
     { 中文名称: '通知自动刷新时间', 英文名称: 'notificationsUpdateTime', 处理函数: a => a },
+    { 中文名称: '仓库排序选项', 英文名称: 'repoSort', 处理函数: a => a },
 ].map(a => ({ [a.中文名称]: a.处理函数(vscode.workspace.getConfiguration(插件名称).get(a.英文名称)) }))
     .reduce((s, a) => Object.assign(s, a), {})
 var 获得用户通知 = (令牌) => HttpHelp('get', `https://gitee.com/api/v5/notifications/threads?access_token=${令牌}&type=all&page=1&per_page=20`)
@@ -86,7 +87,7 @@ exports.activate = async function (context) {
     })
 
     注册命令(context, '刷新仓库', async _ => {
-        用户仓库信息 = await 获得用户仓库信息(用户配置.令牌)
+        用户仓库信息 = await 获得用户仓库信息(用户配置.令牌, 用户配置.仓库排序选项)
         界面_我的仓库.设置数据(用户仓库信息.map(a => ({ 显示文本: (a.public ? '[公]' : a.private ? '[私]' : '[未]') + a.name, id: a.id })))
     })
     注册命令(context, '新建仓库', async _ => {
