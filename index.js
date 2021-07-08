@@ -38,7 +38,7 @@ var 注册树数据提供者 = (id) => {
     }
     return r
 }
-var 获得选择仓库的地址 = (用户仓库信息, 选择仓库) => 用户仓库信息.filter(a => a.name == 选择仓库.id)[0].html_url
+var 获得选择仓库的地址 = (用户仓库信息, 选择仓库) => 用户仓库信息.filter(a => a.id == 选择仓库.id)[0].html_url
 var 获得完整本地地址 = (下载位置, 选择仓库) => path.join(下载位置, 选择仓库.id)
 var 注册命令 = (context, 名称, 函数) => context.subscriptions.push(vscode.commands.registerCommand(`${插件名称}.${名称}`, 函数))
 var 获得用户仓库信息 = (令牌) => HttpHelp('get', `https://gitee.com/api/v5/user/repos?access_token=${令牌}&sort=full_name&page=1&per_page=100`)
@@ -87,7 +87,7 @@ exports.activate = async function (context) {
 
     注册命令(context, '刷新仓库', async _ => {
         用户仓库信息 = await 获得用户仓库信息(用户配置.令牌)
-        界面_我的仓库.设置数据(用户仓库信息.map(a => ({ 显示文本: (a.public ? '[公]' : a.private ? '[私]' : '[未]') + a.name, id: a.name })))
+        界面_我的仓库.设置数据(用户仓库信息.map(a => ({ 显示文本: (a.public ? '[公]' : a.private ? '[私]' : '[未]') + a.name, id: a.id })))
     })
     注册命令(context, '新建仓库', async _ => {
         var 仓库名称 = await vscode.window.showInputBox({
@@ -160,7 +160,6 @@ exports.activate = async function (context) {
 
     if (用户配置.通知自动刷新时间 != 0) {
         Y(s => setTimeout(async () => {
-            提示('刷新')
             await 执行命令('刷新通知')
             s(s)
         }, 用户配置.通知自动刷新时间 * 60 * 1000))

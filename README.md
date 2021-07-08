@@ -1,6 +1,6 @@
 # gitee的vscde插件
 
-gitee 的 vscod 插件!
+gitee 的 vscode 插件!
 
 ## 功能
 
