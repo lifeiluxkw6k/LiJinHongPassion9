@@ -12,7 +12,21 @@ gitee 的 vscode 插件!
 
 ## 相关
 
-https://gitee.com/g8up/vscode-gitee?_from=gitee_search
+<https://gitee.com/g8up/vscode-gitee?_from=gitee_search>
+
+## 使用
+
+1 添加一个`私人令牌`
+
+![使用1](doc/使用1.png)
+
+2 设置
+
+![使用2](doc/使用2.png)
+
+3 安装插件
+
+4 重启 vscode
 
 ## 已知问题
 
@@ -29,6 +43,10 @@ https://gitee.com/g8up/vscode-gitee?_from=gitee_search
 ## 可设置项
 
 ![设置](doc/设置.png)
+
+## Change Log
+
+[Change Log](https://gitee.com/hbybyyang/gitee_vscde_plugin/blob/master/CHANGELOG.md)
 
 ## 其他
 

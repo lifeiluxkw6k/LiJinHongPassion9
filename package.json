@@ -2,7 +2,7 @@
     "name": "gitee-vscode-plugin",
     "displayName": "gitee_vscode_plugin",
     "description": "",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "hbybyyang",
     "engines": {
         "vscode": "^1.47.0"
