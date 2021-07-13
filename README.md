@@ -24,9 +24,7 @@ gitee 的 vscode 插件!
 
 ![使用2](doc/使用2.png)
 
-3 安装插件
-
-4 重启 vscode
+3 重启 vscode
 
 ## 已知问题
 
