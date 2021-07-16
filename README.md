@@ -44,7 +44,7 @@ gitee 的 vscode 插件!
 
 ## Change Log
 
-[Change Log](https://gitee.com/hbybyyang/gitee_vscde_plugin/blob/master/CHANGELOG.md)
+[Change Log](https://gitee.com/hbybyyang/gitee_vscode_plugin/blob/master/CHANGELOG.md)
 
 ## 其他
 

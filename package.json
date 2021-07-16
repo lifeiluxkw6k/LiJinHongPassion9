@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://gitee.com/hbybyyang/gitee_vscde_plugin.git"
+        "url": "https://gitee.com/hbybyyang/gitee_vscode_plugin.git"
     },
     "categories": [
         "Other"
