@@ -1,4 +1,4 @@
-# gitee的vscde插件
+# gitee的vscode插件
 
 gitee 的 vscode 插件!
 
