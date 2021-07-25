@@ -3,6 +3,7 @@
     "displayName": "码云（Gitee）常用功能",
     "description": "显示通知、仓库等等，支持相关快捷操作",
     "version": "0.0.11",
+    "icon": "images/gitee-logo.png",
     "publisher": "hbybyyang",
     "engines": {
         "vscode": "^1.47.0"
