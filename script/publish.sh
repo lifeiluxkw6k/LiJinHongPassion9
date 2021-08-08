@@ -1,1 +1,1 @@
-vsce publish --packagePath gitee-vscode-plugin-0.0.13.vsix
+vsce publish --packagePath gitee-vscode-plugin-0.0.14.vsix

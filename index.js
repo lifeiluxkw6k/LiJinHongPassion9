@@ -150,7 +150,7 @@ exports.activate = async function (context) {
         if (!existsSync(路径)) {
             await 执行命令('下载仓库', a)
         }
-        vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(路径))
+        vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(路径), true)
     })
     注册命令(context, '复制仓库地址(https)', async a => {
         var 地址 = 获得选择仓库的地址(用户仓库信息, a)
