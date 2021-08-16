@@ -2,6 +2,7 @@
 
 [![version](https://vsmarketplacebadge.apphb.com/version/hbybyyang.gitee-vscode-plugin.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=hbybyyang.gitee-vscode-plugin)
 [![installs](https://vsmarketplacebadge.apphb.com/installs/hbybyyang.gitee-vscode-plugin.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=hbybyyang.gitee-vscode-plugin)
+[![star](https://gitee.com/hbybyyang/gitee_vscode_plugin/badge/star.svg?theme=dark)](https://gitee.com/hbybyyang/gitee_vscode_plugin)
 
 显示通知、仓库，支持相关快捷操作。包括下载、新建、显示现有仓库、在 VS Code 或资源管理器中打开等等。
 
