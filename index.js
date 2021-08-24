@@ -76,6 +76,7 @@ exports.activate = async function (context) {
     var 用户通知信息
     var 界面_我的仓库 = 注册树数据提供者('my_repo')
     var 界面_我的通知 = 注册树数据提供者('my_info')
+    var 过滤条件 = ''
 
     注册命令(context, '刷新通知', async _ => {
         界面_我的通知 = 界面_我的通知.设置数据([{ 显示文本: '加载中...' }])
@@ -88,9 +89,25 @@ exports.activate = async function (context) {
     })
 
     注册命令(context, '刷新仓库', async _ => {
-        界面_我的仓库.设置数据([{ 显示文本: '加载中...' }])
+        var 显示数组 = []
+        if (过滤条件 != '') {
+            显示数组 = [{ 显示文本: '※ 当前的过滤条件:' + 过滤条件 }]
+        }
+        界面_我的仓库.设置数据([...显示数组, { 显示文本: '加载中...' }])
         用户仓库信息 = await 获得用户仓库信息(用户配置.令牌, 用户配置.仓库排序选项)
-        界面_我的仓库.设置数据(用户仓库信息.map(a => ({ 显示文本: (a.public ? '[公]' : a.private ? '[私]' : '[未]') + a.name, id: a.id })))
+        界面_我的仓库.设置数据([
+            ...显示数组,
+            ...用户仓库信息.filter(a => a.name.indexOf(过滤条件) != -1)
+                .map(a => ({ 显示文本: (a.public ? '[公]' : a.private ? '[私]' : '[未]') + a.name, id: a.id }))
+        ])
+    })
+    注册命令(context, '过滤', async _ => {
+        过滤条件 = await vscode.window.showInputBox({
+            prompt: '请输入你要搜索的内容,留空为不过滤.',
+            placeHolder: '请输入你要搜索的内容,留空为不过滤.',
+            value: 过滤条件,
+        })
+        执行命令('刷新仓库')
     })
     注册命令(context, '新建仓库', async _ => {
         var 仓库名称 = await vscode.window.showInputBox({

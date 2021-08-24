@@ -2,7 +2,7 @@
     "name": "gitee-vscode-plugin",
     "displayName": "码云（Gitee）常用功能",
     "description": "显示通知、仓库等等，支持相关快捷操作",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "icon": "images/gitee-logo-128.png",
     "publisher": "hbybyyang",
     "engines": {
@@ -84,6 +84,10 @@
                 "title": "刷新"
             },
             {
+                "command": "lsby_gitee_vscode_plugin.过滤",
+                "title": "过滤"
+            },
+            {
                 "command": "lsby_gitee_vscode_plugin.新建仓库",
                 "title": "新建仓库"
             },
@@ -120,6 +124,11 @@
             "view/title": [
                 {
                     "command": "lsby_gitee_vscode_plugin.新建仓库",
+                    "when": "view == my_repo",
+                    "group": "navigation"
+                },
+                {
+                    "command": "lsby_gitee_vscode_plugin.过滤",
                     "when": "view == my_repo",
                     "group": "navigation"
                 },
