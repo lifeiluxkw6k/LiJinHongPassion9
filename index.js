@@ -91,7 +91,7 @@ exports.activate = async function (context) {
     注册命令(context, '刷新仓库', async _ => {
         var 显示数组 = []
         if (过滤条件 != '') {
-            显示数组 = [{ 显示文本: '※ 当前的过滤条件:' + 过滤条件 }]
+            显示数组 = [{ 显示文本: '※ 当前的过滤条件: ' + 过滤条件 }]
         }
         界面_我的仓库.设置数据([...显示数组, { 显示文本: '加载中...' }])
         用户仓库信息 = await 获得用户仓库信息(用户配置.令牌, 用户配置.仓库排序选项)
@@ -103,31 +103,31 @@ exports.activate = async function (context) {
     })
     注册命令(context, '过滤', async _ => {
         过滤条件 = await vscode.window.showInputBox({
-            prompt: '请输入你要搜索的内容,留空为不过滤.',
-            placeHolder: '请输入你要搜索的内容,留空为不过滤.',
+            prompt: '请输入你要搜索的内容, 留空为不过滤.',
+            placeHolder: '请输入你要搜索的内容, 留空为不过滤.',
             value: 过滤条件,
         })
         执行命令('刷新仓库')
     })
     注册命令(context, '新建仓库', async _ => {
         var 仓库名称 = await vscode.window.showInputBox({
-            prompt: '请输入仓库名称,可以是中文',
-            placeHolder: '请输入仓库名称,可以是中文'
+            prompt: '请输入仓库名称, 可以是中文.',
+            placeHolder: '请输入仓库名称, 可以是中文.'
         })
         if (仓库名称 == '' || 仓库名称 == null) {
             return
         }
 
         var 路径 = await vscode.window.showInputBox({
-            prompt: '请输入仓库名称,可以是中文',
-            placeHolder: '请输入仓库名称,可以是中文',
+            prompt: '请输入仓库名称, 只能是数字和字母.',
+            placeHolder: '请输入仓库名称, 只能是数字和字母.',
             value: await 翻译(仓库名称)
         })
         if (路径 == '' || 路径 == null) {
             return
         }
 
-        提示('这里有一个问题,在网页上,是可以使用中文作为仓库名称,但gitee提供的api并不能用中文.所以这里使用路径名称作为仓库名称.已经发邮件反馈了,等待回复.')
+        提示('在网页上是可以使用中文作为仓库名称的, 但gitee提供的api并不能用中文, 所以这里使用路径名称作为仓库名称. 已经发邮件反馈了, 等待回复.')
 
         var res = await 创建仓库(用户配置.令牌, 路径)
         提示(JSON.stringify(res))
