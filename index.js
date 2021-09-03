@@ -107,6 +107,7 @@ exports.activate = async function (context) {
             placeHolder: '请输入你要搜索的内容, 留空为不过滤.',
             value: 过滤条件,
         })
+        if (过滤条件 == null) 过滤条件 = ''
         执行命令('刷新仓库')
     })
     注册命令(context, '新建仓库', async _ => {
