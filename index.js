@@ -102,12 +102,15 @@ exports.activate = async function (context) {
         ])
     })
     注册命令(context, '过滤', async _ => {
-        过滤条件 = await vscode.window.showInputBox({
+        var 输入 = await vscode.window.showInputBox({
             prompt: '请输入你要搜索的内容, 留空为不过滤.',
             placeHolder: '请输入你要搜索的内容, 留空为不过滤.',
             value: 过滤条件,
         })
-        if (过滤条件 == null) 过滤条件 = ''
+        if (过滤条件 == null) {
+            return
+        }
+        过滤条件 = 输入
         执行命令('刷新仓库')
     })
     注册命令(context, '新建仓库', async _ => {
