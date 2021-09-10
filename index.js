@@ -97,7 +97,7 @@ exports.activate = async function (context) {
         用户仓库信息 = await 获得用户仓库信息(用户配置.令牌, 用户配置.仓库排序选项)
         界面_我的仓库.设置数据([
             ...显示数组,
-            ...用户仓库信息.filter(a => a.name.indexOf(过滤条件) != -1)
+            ...用户仓库信息.filter(a => a.name.toLowerCase().indexOf(过滤条件.toLowerCase()) != -1)
                 .map(a => ({ 显示文本: (a.public ? '[公]' : a.private ? '[私]' : '[未]') + a.name, id: a.id }))
         ])
     })
@@ -110,7 +110,7 @@ exports.activate = async function (context) {
         if (过滤条件 == null) {
             return
         }
-        过滤条件 = 输入
+        过滤条件 = 输入.trim()
         执行命令('刷新仓库')
     })
     注册命令(context, '新建仓库', async _ => {
