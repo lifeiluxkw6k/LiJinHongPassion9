@@ -54,7 +54,7 @@ var 翻译 = s => HttpHelp('get', `https://gitee.com/search/translate?q=${encode
     .then(a => a.result)
 var 获得用户配置 = _ => [
     { 中文名称: '令牌', 英文名称: 'personal_access_tokens', 处理函数: a => a },
-    { 中文名称: '下载位置', 英文名称: 'default_location', 处理函数: a => path.resolve(eval('`' + a + '`')) },
+    { 中文名称: '下载位置', 英文名称: 'default_location', 处理函数: a => a == '' || a == null ? `${process.env.HOME || process.env.USERPROFILE}/gitee`.replace(/\\/g, '/') : eval('`' + a.replace(/\\/g, '/') + '`') },
     { 中文名称: '通知自动刷新时间', 英文名称: 'notificationsUpdateTime', 处理函数: a => a },
     { 中文名称: '仓库排序选项', 英文名称: 'repoSort', 处理函数: a => a },
 ].map(a => ({ [a.中文名称]: a.处理函数(vscode.workspace.getConfiguration(插件名称).get(a.英文名称)) }))
