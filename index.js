@@ -41,10 +41,17 @@ var 注册树数据提供者 = (id) => {
 var 获得选择仓库的地址 = (用户仓库信息, 选择仓库) => 用户仓库信息.filter(a => a.id == 选择仓库.id)[0].html_url
 var 获得完整本地地址 = (下载位置, 选择仓库) => path.join(下载位置, 选择仓库.label.match(/(?<=\[.*?\]).*/g)[0])
 var 注册命令 = (context, 名称, 函数) => context.subscriptions.push(vscode.commands.registerCommand(`${插件名称}.${名称}`, 函数))
+var 获得用户资料 = (令牌) => HttpHelp('get', `https://gitee.com/api/v5/user?access_token=${令牌}`)
+    .then(a => a.body)
+    .then(JSON.parse)
 var 获得用户仓库信息 = (令牌, 仓库排序选项) => HttpHelp('get', `https://gitee.com/api/v5/user/repos?access_token=${令牌}&sort=${仓库排序选项}&page=1&per_page=100`)
     .then(a => a.body)
     .then(JSON.parse)
 var 创建仓库 = (令牌, 名称) => HttpHelp('post', 'https://gitee.com/api/v5/user/repos', { "access_token": 令牌, "name": 名称, "private": "true" })
+    .then(a => a.body)
+    .then(JSON.parse)
+var 修改仓库名称 = (令牌, 所有者, 路径, 新名称) => HttpHelp('PATCH', `https://gitee.com/api/v5/repos/${所有者}/${路径}`, { "access_token": 令牌, "name": 新名称 })
+    .then(a => { console.log(a); return a; })
     .then(a => a.body)
     .then(JSON.parse)
 var 执行命令 = (名称, ...参数) => vscode.commands.executeCommand(`${插件名称}.${名称}`, ...参数)
@@ -74,8 +81,7 @@ exports.activate = async function (context) {
         异常('未配置令牌')
     }
 
-    var 用户仓库信息
-    var 用户通知信息
+    var gitee用户名 = (await 获得用户资料(用户配置.令牌)).name
     var 界面_我的仓库 = 注册树数据提供者('my_repo')
     var 界面_我的通知 = 注册树数据提供者('my_info')
     var 过滤条件 = ''
@@ -133,10 +139,13 @@ exports.activate = async function (context) {
             return
         }
 
-        提示('在网页上是可以使用中文作为仓库名称的, 但gitee提供的api并不能用中文, 所以这里使用路径名称作为仓库名称. 已经发邮件反馈了, 等待回复.')
-
         var res = await 创建仓库(用户配置.令牌, 路径)
         提示(JSON.stringify(res))
+
+        var res = await 修改仓库名称(用户配置.令牌, gitee用户名, 路径, 仓库名称)
+            .catch(e => console.log(e))
+        提示(JSON.stringify(res))
+
         执行命令('刷新仓库')
     })
     注册命令(context, '下载仓库', async a => {
