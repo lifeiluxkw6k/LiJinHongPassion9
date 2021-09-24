@@ -6,6 +6,8 @@
 
 [Gitee 项目地址](https://gitee.com/hbybyyang/gitee_vscode_plugin)
 
+[VSCode 商店地址](https://marketplace.visualstudio.com/items?itemName=hbybyyang.gitee-vscode-plugin)
+
 显示通知、仓库，支持相关快捷操作。包括下载、新建、显示现有仓库、在 VS Code 或资源管理器中打开等等。
 
 ## 效果
